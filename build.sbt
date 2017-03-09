@@ -20,7 +20,8 @@ libraryDependencies += "org.apache.kafka" % "kafka-clients" % kafkaVersion
 libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.23"
 
 // https://mvnrepository.com/artifact/org.mapdb/mapdb
-libraryDependencies += "org.mapdb" % "mapdb" % "3.0.3"
+//libraryDependencies += "org.mapdb" % "mapdb" % "3.0.3"
+libraryDependencies += "org.mapdb" % "mapdb" % "1.0.9"
 
 // https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-client
 // libraryDependencies += "org.apache.hadoop" % "hadoop-client" % "2.6.0"

@@ -12,22 +12,36 @@ class File(configurations: Map[String, String]){
   val filePath: String = configurations("file.path")
   val maxFileSize = configurations.getOrElse("file.max.size", (16*1024*1024*1024).toString).toLong // Default: 16GB
 
-  // Create File database
-  lazy val fileDb: DB = DBMaker.fileDB(filePath)
-    .fileMmapEnableIfSupported()
-    .checksumHeaderBypass()
-    .fileLockDisable()
-    .make()
+  lazy val fileDb: DB = createFileDB
   lazy val diskMap = createDiskMap[String, String]
+
+  // Create File database
+  def createFileDB: DB = {
+    DBMaker.newFileDB(new java.io.File(filePath))
+      .mmapFileEnableIfSupported()
+      .make()
+  }
+
+  def getReadOnlyFileDB: DB = {
+    DBMaker.newFileDB(new java.io.File(filePath))
+      .mmapFileEnableIfSupported()
+      .readOnly()
+      .make()
+  }
 
   // TODO: Make a generic map based on [A,B]
   def createDiskMap[A,B]: HTreeMap[String,String] = {
     val keySerializer = Serializer.STRING
     val valueSerializer = Serializer.STRING
-    fileDb.hashMap("kafka_search", keySerializer, valueSerializer)
+    fileDb.createHashMap("kafka_search")
+      .keySerializer(keySerializer)
+      .valueSerializer(valueSerializer)
       .expireStoreSize(maxFileSize)
-      .expireAfterCreate()
-      .createOrOpen()
+      .make[String, String]()
+  }
+
+  def getDiskMap[A,B]: HTreeMap[String,String] = {
+    fileDb.getHashMap[String, String]("kafka_search")
   }
 
 }

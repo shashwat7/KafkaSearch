@@ -1,10 +1,8 @@
 package kafka.search
 
-import java.util.concurrent.TimeUnit
-
 import kafka.search.common.Utils
-import kafka.search.io.{Reader, Writer}
-import kafka.search.io.file.{File, FileReader}
+import kafka.search.io.Reader
+import kafka.search.io.file.FileReader
 import org.slf4j.{Logger, LoggerFactory}
 
 /**

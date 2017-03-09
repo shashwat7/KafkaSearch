@@ -1,6 +1,7 @@
 package kafka.search.io.file
 
 import kafka.search.io.Writer
+import org.mapdb.DB
 import org.slf4j.{Logger, LoggerFactory}
 
 /**
@@ -9,14 +10,17 @@ import org.slf4j.{Logger, LoggerFactory}
 class FileWriter(configurations: Map[String, String]) extends File(configurations) with Writer{
   override val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
+  override lazy val fileDb: DB = createFileDB
+  override lazy val diskMap = createDiskMap[String, String]
+
   override def write_key_value[A, B](key: A, value: B) = {
-    logger.debug("Writing (key, value) : " + key.toString + "," + value.toString)
+    logger.info("Writing (key, value) : " + key.toString + "," + value.toString)
     diskMap.put(key.toString, value.toString)
     true // TODO: Check return value
   }
 
   override def close(): Unit = {
-    logger.debug("Closing FileWriter.")
+    logger.info("Closing FileWriter.")
     fileDb.close()
   }
 

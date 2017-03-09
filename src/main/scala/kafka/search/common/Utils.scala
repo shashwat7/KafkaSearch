@@ -25,10 +25,15 @@ object Utils {
     propertyMap
   }
 
-  def printAndLogToAFile(f: String, str: String) = {
+  def logToAFile(f: String, str: String) = {
     val fw = new FileWriter(f, true)
     fw.write(str + "\n")
     fw.close()
+    println(str)
+  }
+
+  def printAndLogToAFile(f: String, str: String) = {
+    logToAFile(f, str)
     println(str)
   }
 

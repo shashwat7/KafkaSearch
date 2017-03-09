@@ -15,4 +15,4 @@ KafkaSearch is being built to handle the following usecases:
 
  - Apache Kafka 0.9
  - Scala 10.4
- - Java 1.8
+ - Java 1.7

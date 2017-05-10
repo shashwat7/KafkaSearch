@@ -11,7 +11,7 @@ class FileWriter(configurations: Map[String, String]) extends File(configuration
   override val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   override lazy val fileDb: DB = createFileDB
-  override lazy val diskMap = createDiskMap[String, String]
+  lazy val diskMap = createDiskMap[String, String]
 
   override def write_key_value[A, B](key: A, value: B) = {
     logger.info("Writing (key, value) : " + key.toString + "," + value.toString)

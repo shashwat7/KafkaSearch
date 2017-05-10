@@ -12,7 +12,17 @@ class FileReader(configurations: Map[String, String]) extends File(configuration
 
   // Create File database
   override lazy val fileDb: DB = getReadOnlyFileDB
-  override lazy val diskMap = getDiskMap[String, String]
+  lazy val diskMap = getDiskMap[String, String]
+
+  private def getReadOnlyFileDB: DB = {
+    logger.debug("Creating a readonly DB instance.")
+    DBMaker.fileDB(filePath)
+      .fileMmapEnableIfSupported()
+      .checksumHeaderBypass()
+      .fileLockDisable()
+      .readOnly()
+      .make()
+  }
 
   override def contains[A](key: A): Boolean = {
     logger.info("Checking if the following key exists: " + key.toString)

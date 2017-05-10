@@ -1,7 +1,6 @@
 package kafka.search.common
 
 import java.io.FileWriter
-
 import org.slf4j.{Logger, LoggerFactory}
 
 import scala.io.Source
@@ -29,7 +28,6 @@ object Utils {
     val fw = new FileWriter(f, true)
     fw.write(str + "\n")
     fw.close()
-    println(str)
   }
 
   def printAndLogToAFile(f: String, str: String) = {
